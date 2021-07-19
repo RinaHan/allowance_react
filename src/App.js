@@ -128,8 +128,6 @@ const Delete = css`
   border: none;
   font-size: 16px;
   color: #fff;
-  /* margin: 0 0 0 30px; */
-
 `;
 const DeleteF = styled.button`
   ${Delete}
@@ -262,7 +260,6 @@ function App() {
                 date: "",
                 money: "",
               });
-              // setMoney("w");
               console.log(arr);
             } else if (addData.name === "yujun") {
               var arr = [...yujun];
@@ -274,7 +271,6 @@ function App() {
                 date: "",
                 money: "",
               });
-              // setMoney("w");
               console.log(arr);
             }
           }}
