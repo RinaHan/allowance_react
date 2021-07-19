@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.scss";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Container = styled.div`
   display: flex;
@@ -9,8 +9,83 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   margin: 300px 0;
-  /* background-color:rgb(30, 194, 104); */
 `;
+const Cont = styled.div`
+  display: flex;
+  margin: 50px auto;
+`;
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20px;
+`;
+const Name = css`
+  width: 150px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 7px;
+  margin: 20px 0;
+`;
+const NameF = styled.div`
+  ${Name}
+  background-color: #a7ecce;
+`;
+const NameY = styled.div`
+  ${Name}
+  background-color: rgb(211, 234, 128);
+`;
+const Note = css`
+  width: 300px;
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  padding: 20px 0;
+  margin: 0 0 20px;
+  > p {
+    width:200px;
+    justify-content:space-between;
+    display:flex;
+  }
+`;
+const NoteF = styled.div`
+  ${Note}
+  flex-direction: column;
+  background-color: #d5f1e5;
+`;
+const NoteY = styled.div`
+  ${Note}
+  flex-direction: column;
+  background-color: rgb(233, 240, 208);
+`;
+const NoteF_Total = styled.div`
+  ${Note}
+  justify-content: center;
+  background-color: #d5f1e5;
+`;
+const NoteY_Total = styled.div`
+  ${Note}
+  justify-content: center;
+  background-color: rgb(233, 240, 208);
+`;
+const SelectName = styled.select`
+  width: 130px;
+  height: 50px;
+  margin-right: 10px;
+  background-color: rgb(222, 234, 242);
+  border: none;
+  color: rgb(34, 131, 195);
+  font-weight: bold;
+  border-radius: 7px;
+`;
+const Option = styled.option`
+  color: rgb(144, 29, 9);
+`;
+
 const InputCont = styled.div`
   > input {
     width: 210px;
@@ -37,7 +112,6 @@ const InputCont = styled.div`
     height: 50px;
     font-size: 16px;
     font-weight: bold;
-    /* color:#fff; */
     background-color: rgb(151, 199, 231);
     border: none;
     border-radius: 7px;
@@ -50,82 +124,47 @@ const InputCont = styled.div`
     }
   }
 `;
-const Cont = styled.div`
-  display: flex;
-  margin: 50px auto;
-`;
-const Infom = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 20px;
-`;
-const Name = styled.div`
-  width: 150px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 7px;
-  background-color: #a7ecce;
-  margin: 20px 0;
-`;
-const Note = styled.div`
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
-  padding: 20px 0;
-  background-color: #d5f1e5;
-  margin: 0 0 20px;
-`;
-const SelectCont = styled.select`
-  width: 130px;
-  height: 50px;
-  margin-right: 10px;
-  background-color: rgb(222, 234, 242);
+const Delete = css`
   border: none;
-  color: rgb(34, 131, 195);
-  font-weight: bold;
-  border-radius: 7px;
+  font-size: 16px;
+  color: #fff;
+  /* margin: 0 0 0 30px; */
+
+`;
+const DeleteF = styled.button`
+  ${Delete}
+  background-color: #a7ecce;
+  :hover {
+    background-color: #70e1a6;
+  }
+  :active {
+    background-color: #a7ecce;
+    transition: 0.1s;
+  }
+`;
+const DeleteY = styled.button`
+  ${Delete}
+  background-color:rgb(211, 234, 128);
+  :hover {
+    background-color: #b1dd88;
+    /* color:#111; */
+  }
+  :active {
+    background-color: rgb(211, 234, 128);
+    transition: 0.1s;
+  }
 `;
 
 function App() {
-  const [fred, setFred] = useState([
-    { date: "2021-02-02", money: "30" },
-    { date: "2021-05-22", money: "5" },
-    { date: "2021-06-10", money: "5" },
-  ]);
+  const [fred, setFred] = useState([{ date: "2021-07-20", money: "30" }]);
 
-  const [yujun, setYujun] = useState([
-    { date: "2021-02-02", money: "30" },
-    { date: "2021-05-22", money: "5" },
-    { date: "2021-06-10", money: "5" },
-  ]);
+  const [yujun, setYujun] = useState([{ date: "2021-07-20", money: "30" }]);
 
-  const [addFredData, setAddFredData] = useState({
+  const [addData, setAddData] = useState({
     name: "fred",
     date: "",
     money: "",
   });
-  const [addFredData, setAddFredData] = useState({
-    name: "fred",
-    date: "",
-    money: "",
-  });
-  const [addYujunData, setAddYujunData] = useState({
-    name: "fred",
-    date: "",
-    money: "",
-  });
-
-  // const [date, setDate] = useState("");
-  // const [money, setMoney] = useState("");
-  // const [name, setName] = useState("fred");
 
   const handleDataChange = (event) => {
     // var event = {
@@ -134,11 +173,11 @@ function App() {
     //     value:''
     //   }
     // }
-    
+
     const {
       target: { name, value },
     } = event;
-    
+
     setAddData({
       ...addData,
       [name]: value,
@@ -157,42 +196,46 @@ function App() {
 
   return (
     <Container className="App">
-      <img src="logo192.png"/>
       <Cont>
-        <Infom>
-          <Name>Fred</Name>
-          <Note>
+        <Main>
+          <NameF>Fred</NameF>
+          <NoteF>
             {fred.map((o, i) => {
               return (
                 <p key={i}>
                   {o.date}, <b>${o.money}</b>
+                  <DeleteF>x</DeleteF>
                 </p>
               );
             })}
-          </Note>
-          <Note>total: ${FredTotal}</Note>
-        </Infom>
-        <Infom>
-          <Name>Yujun</Name>
-          <Note>
+          </NoteF>
+          <NoteF_Total>
+            total: <b>${FredTotal}</b>
+          </NoteF_Total>
+        </Main>
+        <Main>
+          <NameY>Yujun</NameY>
+          <NoteY>
             {yujun.map((o, i) => {
               return (
                 <p key={i}>
                   {o.date}, <b>${o.money}</b>
+                  <DeleteY>x</DeleteY>
                 </p>
               );
             })}
-          </Note>
-          <Note>total: ${YujunTotal}</Note>
-        </Infom>
+          </NoteY>
+          <NoteY_Total>
+            total:<b>${YujunTotal}</b>
+          </NoteY_Total>
+        </Main>
       </Cont>
 
       <InputCont>
-        <SelectCont name="name" onChange={handleDataChange}>
-          {/* <option value='null'>select</option> */}
-          <option value="fred">Fred</option>
+        <SelectName name="name" onChange={handleDataChange}>
+          <Option value="fred">Fred</Option>
           <option value="yujun">Yujun</option>
-        </SelectCont>
+        </SelectName>
         <input
           type="date"
           placeholder="add $"
@@ -209,18 +252,31 @@ function App() {
         />
         <button
           onClick={() => {
-            var arr = [...fred];
-            arr.push({ date: addData.date, money: addData.money });
-            setFred(arr);
-            setAddData({
-              ...addData,
-              // name:null,
-              date:"",
-              money:""
-            });
-            
-            // setMoney("w");
-            console.log(arr);
+            if (addData.name === "fred") {
+              var arr = [...fred];
+              arr.push({ name: addData.name, date: addData.date, money: addData.money });
+              setFred(arr);
+              setAddData({
+                ...addData,
+                // name:null,
+                date: "",
+                money: "",
+              });
+              // setMoney("w");
+              console.log(arr);
+            } else if (addData.name === "yujun") {
+              var arr = [...yujun];
+              arr.push({ name: addData.name, date: addData.date, money: addData.money });
+              setYujun(arr);
+              setAddData({
+                ...addData,
+                // name:null,
+                date: "",
+                money: "",
+              });
+              // setMoney("w");
+              console.log(arr);
+            }
           }}
         >
           Add
