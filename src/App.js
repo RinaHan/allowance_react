@@ -96,20 +96,68 @@ const SelectCont = styled.select`
 
 function App() {
   const [fred, setFred] = useState([
-    { date: "2021-02-02", sum: "30" },
-    { date: "2021-05-22", sum: "5" },
-    { date: "2021-06-10", sum: "5" },
+    { date: "2021-02-02", money: "30" },
+    { date: "2021-05-22", money: "5" },
+    { date: "2021-06-10", money: "5" },
   ]);
+
   const [yujun, setYujun] = useState([
-    { date: "2021-02-02", sum: "30" },
-    { date: "2021-05-22", sum: "5" },
-    { date: "2021-06-10", sum: "5" },
+    { date: "2021-02-02", money: "30" },
+    { date: "2021-05-22", money: "5" },
+    { date: "2021-06-10", money: "5" },
   ]);
-  const [date, setDate] = useState("");
-  const [sum, setSum] = useState("");
+
+  const [addFredData, setAddFredData] = useState({
+    name: "fred",
+    date: "",
+    money: "",
+  });
+  const [addFredData, setAddFredData] = useState({
+    name: "fred",
+    date: "",
+    money: "",
+  });
+  const [addYujunData, setAddYujunData] = useState({
+    name: "fred",
+    date: "",
+    money: "",
+  });
+
+  // const [date, setDate] = useState("");
+  // const [money, setMoney] = useState("");
+  // const [name, setName] = useState("fred");
+
+  const handleDataChange = (event) => {
+    // var event = {
+    //   target: {
+    //     name:'',
+    //     value:''
+    //   }
+    // }
+    
+    const {
+      target: { name, value },
+    } = event;
+    
+    setAddData({
+      ...addData,
+      [name]: value,
+    });
+  };
+
+  var FredTotal = 0;
+  for (var i = 0; i < fred.length; i++) {
+    FredTotal += Number(fred[i].money);
+  }
+
+  var YujunTotal = 0;
+  for (var i = 0; i < yujun.length; i++) {
+    YujunTotal += Number(yujun[i].money);
+  }
 
   return (
     <Container className="App">
+      <img src="logo192.png"/>
       <Cont>
         <Infom>
           <Name>Fred</Name>
@@ -117,56 +165,61 @@ function App() {
             {fred.map((o, i) => {
               return (
                 <p key={i}>
-                  {o.date}, <b>{o.sum}$</b>
+                  {o.date}, <b>${o.money}</b>
                 </p>
               );
             })}
           </Note>
-          <Note>total</Note>
+          <Note>total: ${FredTotal}</Note>
         </Infom>
         <Infom>
           <Name>Yujun</Name>
           <Note>
-          {yujun.map((o, i) => {
+            {yujun.map((o, i) => {
               return (
                 <p key={i}>
-                  {o.date}, <b>{o.sum}$</b>
+                  {o.date}, <b>${o.money}</b>
                 </p>
               );
             })}
           </Note>
-          <Note>total</Note>
+          <Note>total: ${YujunTotal}</Note>
         </Infom>
       </Cont>
 
       <InputCont>
-        <SelectCont>
+        <SelectCont name="name" onChange={handleDataChange}>
+          {/* <option value='null'>select</option> */}
           <option value="fred">Fred</option>
           <option value="yujun">Yujun</option>
         </SelectCont>
         <input
           type="date"
           placeholder="add $"
-          value={date}
-          onChange={(e) => {
-            setDate(e.target.value);
-          }}
+          value={addData.date}
+          name="date"
+          onChange={handleDataChange}
         />
         <input
           type="number"
           placeholder="add $"
-          value={sum}
-          onChange={(e) => {
-            setSum(e.target.value);
-          }}
+          value={addData.money}
+          name="money"
+          onChange={handleDataChange}
         />
         <button
           onClick={() => {
             var arr = [...fred];
-            arr.push({ date: date, sum: sum });
+            arr.push({ date: addData.date, money: addData.money });
             setFred(arr);
-            setDate("")
-            setSum("")
+            setAddData({
+              ...addData,
+              // name:null,
+              date:"",
+              money:""
+            });
+            
+            // setMoney("w");
             console.log(arr);
           }}
         >
