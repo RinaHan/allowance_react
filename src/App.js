@@ -2,169 +2,72 @@ import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.scss";
 import styled, { css } from "styled-components";
+import axios from "axios";
+import { CgAdd } from "react-icons/cg";
+import { ImCancelCircle } from "react-icons/im";
+import {
+  Container,
+  Cont,
+  Main,
+  NameF,
+  NameY,
+  NoteF,
+  NoteY,
+  NoteF_Total,
+  NoteY_Total,
+  SelectName,
+  Option,
+  InputCont,
+  DeleteF,
+  DeleteY,
+  UpdateF,
+  UpdateY,
+} from "./style";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 300px 0;
-`;
-const Cont = styled.div`
-  display: flex;
-  margin: 50px auto;
-`;
-const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 20px;
-`;
-const Name = css`
-  width: 150px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 7px;
-  margin: 20px 0;
-`;
-const NameF = styled.div`
-  ${Name}
-  background-color: #a7ecce;
-`;
-const NameY = styled.div`
-  ${Name}
-  background-color: rgb(211, 234, 128);
-`;
-const Note = css`
-  width: 300px;
-  display: flex;
-  align-items: center;
-  border-radius: 7px;
-  padding: 20px 0;
-  margin: 0 0 20px;
-  > p {
-    width:200px;
-    justify-content:space-between;
-    display:flex;
-  }
-`;
-const NoteF = styled.div`
-  ${Note}
-  flex-direction: column;
-  background-color: #d5f1e5;
-`;
-const NoteY = styled.div`
-  ${Note}
-  flex-direction: column;
-  background-color: rgb(233, 240, 208);
-`;
-const NoteF_Total = styled.div`
-  ${Note}
-  justify-content: center;
-  background-color: #d5f1e5;
-`;
-const NoteY_Total = styled.div`
-  ${Note}
-  justify-content: center;
-  background-color: rgb(233, 240, 208);
-`;
-const SelectName = styled.select`
-  width: 130px;
-  height: 50px;
-  margin-right: 10px;
-  background-color: rgb(222, 234, 242);
-  border: none;
-  color: rgb(34, 131, 195);
-  font-weight: bold;
-  border-radius: 7px;
-`;
-const Option = styled.option`
-  color: rgb(144, 29, 9);
-`;
-
-const InputCont = styled.div`
-  > input {
-    width: 210px;
-    height: 50px;
-    background-color: rgb(222, 234, 242);
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    margin-right: 10px;
-    color: rgb(34, 131, 195);
-    ::placeholder {
-      color: rgb(34, 131, 195);
-      padding-left: 10px;
-    }
-    :hover {
-      background-color: rgb(234, 241, 246);
-    }
-  }
-  > button {
-    width: 50px;
-    height: 50px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: rgb(151, 199, 231);
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    :hover {
-      background-color: rgb(120, 184, 227);
-    }
-    :active {
-      background-color: rgb(151, 199, 231);
-    }
-  }
-`;
-const Delete = css`
-  border: none;
-  font-size: 16px;
-  color: #fff;
-`;
-const DeleteF = styled.button`
-  ${Delete}
-  background-color: #a7ecce;
-  :hover {
-    background-color: #70e1a6;
-  }
-  :active {
-    background-color: #a7ecce;
-    transition: 0.1s;
-  }
-`;
-const DeleteY = styled.button`
-  ${Delete}
-  background-color:rgb(211, 234, 128);
-  :hover {
-    background-color: #b1dd88;
-    /* color:#111; */
-  }
-  :active {
-    background-color: rgb(211, 234, 128);
-    transition: 0.1s;
-  }
-`;
+//filtering data
+const data = [
+  { date: "2021-07-21", money: "20", name: "fred" },
+  { date: "2021-07-27", money: "10", name: "yujun" },
+  { date: "2021-07-21", money: "6", name: "yujun" },
+  { date: "2021-07-20", money: "30", name: "fred" },
+  { date: "2021-07-22", money: "5", name: "yujun" },
+  { date: "2021-07-23", money: "15", name: "yujun" },
+  { date: "2021-07-24", money: "10", name: "yujun" },
+  { date: "2021-07-28", money: "50", name: "fred" },
+];
 
 function App() {
-  const [fred, setFred] = useState([{ date: "2021-07-20", money: "30" }]);
-
-  const [yujun, setYujun] = useState([{ date: "2021-07-20", money: "30" }]);
-
+  const [fred, setFred] = useState([]);
+  const [yujun, setYujun] = useState([]);
   const [addData, setAddData] = useState({
     name: "fred",
     date: "",
     money: "",
   });
+  const [selected, setSelected] = useState(0);
+  const [mode, setMode] = useState("create");
 
-  const handleDataChange = (event) => {
+  const filterFred = () => {
+    //[조건이 true인것을 arrayfh]
+    //{여러줄 쓸때}
+    //return true를 이용해서 해당되는것들 arr에 추가할수 있다
+    var arr = data.filter( o => o.name === 'fred' );
+    setFred(arr);
+    console.log('F', fred);
+   };
+
+   const filterYujun = ()=> {
+     var arr = data.filter( o => o.name === 'yujun' );
+     setYujun(arr);
+     console.log('Y', yujun);
+   }
+   //[]있어야 한번만 
+   useEffect(()=>{
+     filterFred()
+     filterYujun()
+   },[])
+   
+  const handleDataChange = ( event ) => {
     // var event = {
     //   target: {
     //     name:'',
@@ -182,6 +85,67 @@ function App() {
     });
   };
 
+  const addList = async () => {
+    if (addData.name === "fred") {
+      var arr = [...fred];
+      arr.push(addData);
+      setFred(arr);
+      setAddData({
+        name: "fred",
+        date: "",
+        money: ""
+      });
+      console.log(arr);
+    } else if (addData.name === "yujun") {
+      var arr = [...yujun];
+      arr.push(addData);
+      setYujun(arr);
+      setAddData({
+        name: "fred",
+        date: "",
+        money: "",
+      });
+      console.log(arr);
+    }
+    var add = await axios.post("/addmoney", addData);
+  };
+
+  const updateList = () => {
+    //regular expression
+    
+    if(addData.name === 'fred'){
+      var arr = [...fred]
+      arr[selected]={date:addData.date, money:addData.money}
+      setFred(arr)
+      setMode('create')
+      setAddData({
+        name: "fred",
+        date: "",
+        money: "",
+      });
+    } else if (addData.name === 'yujun'){
+      var arr = [...yujun]
+      arr[selected]={date:addData.date, money:addData.money}
+      setYujun(arr)
+      setMode('create')
+      setAddData({
+        name: "fred",
+        date: "",
+        money: "",
+      });
+    } 
+  } 
+
+  // const handleDelete = (name, i) => {
+  //   var arr = name === 'yujun' [...yujun] : [...fred];
+  //   arr.splice(i, 1);
+    
+  // }
+
+  const random = (data) => {
+    console.log(data);
+  }
+
   var FredTotal = 0;
   for (var i = 0; i < fred.length; i++) {
     FredTotal += Number(fred[i].money);
@@ -190,6 +154,13 @@ function App() {
   var YujunTotal = 0;
   for (var i = 0; i < yujun.length; i++) {
     YujunTotal += Number(yujun[i].money);
+  }
+
+  var btnName;
+  if(mode==='create'){
+    btnName=(<p>Add</p>)
+  } else if(mode ==='updateF' || mode === 'updateY'){
+    btnName=(<p>Update</p>)
   }
 
   return (
@@ -202,7 +173,25 @@ function App() {
               return (
                 <p key={i}>
                   {o.date}, <b>${o.money}</b>
-                  <DeleteF>x</DeleteF>
+                  <UpdateF
+                    onClick={() => {
+                      setSelected(i);
+                      setMode("updateF");
+                      setAddData(fred[i])
+                      console.log(i, fred[i])
+                    }}
+                  >
+                    <CgAdd />
+                  </UpdateF>
+                  <DeleteF
+                    onClick={() => {
+                      var arr = [...fred];
+                      arr.splice(i, 1);
+                      setFred(arr);
+                    }}
+                  >
+                    <ImCancelCircle />
+                  </DeleteF>
                 </p>
               );
             })}
@@ -218,7 +207,26 @@ function App() {
               return (
                 <p key={i}>
                   {o.date}, <b>${o.money}</b>
-                  <DeleteY>x</DeleteY>
+                  <UpdateY
+                    onClick={() => {
+                      setSelected(i);
+                      setMode("updateY");
+                      setAddData(yujun[i]);
+                      console.log(i, addData)
+                    }}
+                  >
+                    <CgAdd />
+                  </UpdateY>
+                  <DeleteY
+                    onClick={() => {
+                      // setSelected(i);
+                      var arr = [...yujun];
+                      arr.splice(i, 1);
+                      setYujun(arr);
+                    }}
+                  >
+                    <ImCancelCircle />
+                  </DeleteY>
                 </p>
               );
             })}
@@ -230,52 +238,44 @@ function App() {
       </Cont>
 
       <InputCont>
-        <SelectName name="name" onChange={handleDataChange}>
+        <SelectName value={addData.name} name="name" onChange={handleDataChange}>
           <Option value="fred">Fred</Option>
-          <option value="yujun">Yujun</option>
+          <Option value="yujun">Yujun</Option>
         </SelectName>
         <input
           type="date"
           placeholder="add $"
-          value={addData.date}
+          value={
+            mode === "updateF" ? addData.date : mode === "updateY" ? addData.date : addData.date
+          }
           name="date"
           onChange={handleDataChange}
         />
         <input
           type="number"
           placeholder="add $"
-          value={addData.money}
+          value={
+            mode === "updateF"
+            ? addData.money
+            : mode === "updateY"
+            ? addData.money
+            : addData.money
+          }
           name="money"
           onChange={handleDataChange}
-        />
+          />
         <button
           onClick={() => {
-            if (addData.name === "fred") {
-              var arr = [...fred];
-              arr.push({ name: addData.name, date: addData.date, money: addData.money });
-              setFred(arr);
-              setAddData({
-                ...addData,
-                // name:null,
-                date: "",
-                money: "",
-              });
-              console.log(arr);
-            } else if (addData.name === "yujun") {
-              var arr = [...yujun];
-              arr.push({ name: addData.name, date: addData.date, money: addData.money });
-              setYujun(arr);
-              setAddData({
-                ...addData,
-                // name:null,
-                date: "",
-                money: "",
-              });
-              console.log(arr);
-            }
+            mode==='create' ? addList() : updateList();
           }}
+
+          // function 여러줄 쓸때 {}
+          // onClick={()=>{
+          //   addList();
+          //   updateList();
+          // }}
         >
-          Add
+          {btnName}
         </button>
       </InputCont>
     </Container>
