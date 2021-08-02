@@ -1,285 +1,109 @@
 import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.scss";
-import styled, { css } from "styled-components";
-import axios from "axios";
-import { CgAdd } from "react-icons/cg";
-import { ImCancelCircle } from "react-icons/im";
-import {
-  Container,
-  Cont,
-  Main,
-  NameF,
-  NameY,
-  NoteF,
-  NoteY,
-  NoteF_Total,
-  NoteY_Total,
-  SelectName,
-  Option,
-  InputCont,
-  DeleteF,
-  DeleteY,
-  UpdateF,
-  UpdateY,
-} from "./style";
+import App from "./App.scss";
+import Form from "./comps/Input";
+import styled from "styled-components";
+import ScrollToBottom from 'react-scroll-to-bottom';
 
-//filtering data
-const data = [
-  { date: "2021-07-21", money: "20", name: "fred" },
-  { date: "2021-07-27", money: "10", name: "yujun" },
-  { date: "2021-07-21", money: "6", name: "yujun" },
-  { date: "2021-07-20", money: "30", name: "fred" },
-  { date: "2021-07-22", money: "5", name: "yujun" },
-  { date: "2021-07-23", money: "15", name: "yujun" },
-  { date: "2021-07-24", money: "10", name: "yujun" },
-  { date: "2021-07-28", money: "50", name: "fred" },
-];
+const Select = styled.select`
+  width: 170px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #6565cd;
+`;
 
-function App() {
-  const [fred, setFred] = useState([]);
-  const [yujun, setYujun] = useState([]);
-  const [addData, setAddData] = useState({
-    name: "fred",
-    date: "",
-    money: "",
-  });
-  const [selected, setSelected] = useState(0);
-  const [mode, setMode] = useState("create");
+export default function Allownace() {
+  const [fred, setFred] = useState([])
+  const [yujun, setYujun] = useState([])
 
-  const filterFred = () => {
-    //[조건이 true인것을 arrayfh]
-    //{여러줄 쓸때}
-    //return true를 이용해서 해당되는것들 arr에 추가할수 있다
-    var arr = data.filter( o => o.name === 'fred' );
-    setFred(arr);
-    console.log('F', fred);
-   };
-
-   const filterYujun = ()=> {
-     var arr = data.filter( o => o.name === 'yujun' );
-     setYujun(arr);
-     console.log('Y', yujun);
-   }
-   //[]있어야 한번만 
-   useEffect(()=>{
-     filterFred()
-     filterYujun()
-   },[])
+  const data = [
+    {name:'fred', date:'2020-20-20', money:'$20'},
+    {name:'fred', date:'2020-20-20', money:'$22'},
+    {name:'fred', date:'2020-20-20', money:'$23'},
+    {name:'fred', date:'2020-20-20', money:'$20'},
+    {name:'fred', date:'2020-20-20', money:'$22'},
+    {name:'fred', date:'2020-20-20', money:'$23'},
+    {name:'fred', date:'2020-20-20', money:'$20'},
+    {name:'fred', date:'2021-20-20', money:'$22'},
+    {name:'fred', date:'2021-20-20', money:'$23'},
+    {name:'fred', date:'2021-20-20', money:'$20'},
+    {name:'yujun', date:'2020-20-20', money:'$20'},
+    {name:'yujun', date:'2020-20-20', money:'$30'},
+    {name:'yujun', date:'2020-20-20', money:'$40'},
+    {name:'yujun', date:'2020-20-20', money:'$20'},
+    {name:'yujun', date:'2020-20-20', money:'$30'},
+    {name:'yujun', date:'2020-20-20', money:'$40'},
+    {name:'yujun', date:'2021-20-20', money:'$20'},
+    {name:'yujun', date:'2021-20-20', money:'$30'},
+    {name:'yujun', date:'2021-20-20', money:'$40'},
+  ]
    
-  const handleDataChange = ( event ) => {
-    // var event = {
-    //   target: {
-    //     name:'',
-    //     value:''
-    //   }
-    // }
+  //질문: filter는 true인값을 array로 생성된다고 했는데, const fred는 [] 없음 error 남
+  const filterData = () => {
+    var fredArr = data.filter(o=> o.name === 'fred')
+    setFred(fredArr)
 
-    const {
-      target: { name, value },
-    } = event;
-
-    setAddData({
-      ...addData,
-      [name]: value,
-    });
-  };
-
-  const addList = async () => {
-    if (addData.name === "fred") {
-      var arr = [...fred];
-      arr.push(addData);
-      setFred(arr);
-      setAddData({
-        name: "fred",
-        date: "",
-        money: ""
-      });
-      console.log(arr);
-    } else if (addData.name === "yujun") {
-      var arr = [...yujun];
-      arr.push(addData);
-      setYujun(arr);
-      setAddData({
-        name: "fred",
-        date: "",
-        money: "",
-      });
-      console.log(arr);
-    }
-    var add = await axios.post("/addmoney", addData);
-  };
-
-  const updateList = () => {
-    //regular expression
-    
-    if(addData.name === 'fred'){
-      var arr = [...fred]
-      arr[selected]={date:addData.date, money:addData.money}
-      setFred(arr)
-      setMode('create')
-      setAddData({
-        name: "fred",
-        date: "",
-        money: "",
-      });
-    } else if (addData.name === 'yujun'){
-      var arr = [...yujun]
-      arr[selected]={date:addData.date, money:addData.money}
-      setYujun(arr)
-      setMode('create')
-      setAddData({
-        name: "fred",
-        date: "",
-        money: "",
-      });
-    } 
-  } 
-
-  // const handleDelete = (name, i) => {
-  //   var arr = name === 'yujun' [...yujun] : [...fred];
-  //   arr.splice(i, 1);
-    
-  // }
-
-  const random = (data) => {
-    console.log(data);
+    var yujunArr = data.filter(o=> o.name === 'yujun')
+    setYujun(yujunArr)
   }
 
-  var FredTotal = 0;
-  for (var i = 0; i < fred.length; i++) {
-    FredTotal += Number(fred[i].money);
-  }
+  useEffect(()=>{
+  filterData()
+  },[])
 
-  var YujunTotal = 0;
-  for (var i = 0; i < yujun.length; i++) {
-    YujunTotal += Number(yujun[i].money);
-  }
-
-  var btnName;
-  if(mode==='create'){
-    btnName=(<p>Add</p>)
-  } else if(mode ==='updateF' || mode === 'updateY'){
-    btnName=(<p>Update</p>)
-  }
-
+  // console.log(fredArr)
   return (
-    <Container className="App">
-      <Cont>
-        <Main>
-          <NameF>Fred</NameF>
-          <NoteF>
-            {fred.map((o, i) => {
-              return (
-                <p key={i}>
-                  {o.date}, <b>${o.money}</b>
-                  <UpdateF
-                    onClick={() => {
-                      setSelected(i);
-                      setMode("updateF");
-                      setAddData(fred[i])
-                      console.log(i, fred[i])
-                    }}
-                  >
-                    <CgAdd />
-                  </UpdateF>
-                  <DeleteF
-                    onClick={() => {
-                      var arr = [...fred];
-                      arr.splice(i, 1);
-                      setFred(arr);
-                    }}
-                  >
-                    <ImCancelCircle />
-                  </DeleteF>
-                </p>
-              );
-            })}
-          </NoteF>
-          <NoteF_Total>
-            total: <b>${FredTotal}</b>
-          </NoteF_Total>
-        </Main>
-        <Main>
-          <NameY>Yujun</NameY>
-          <NoteY>
-            {yujun.map((o, i) => {
-              return (
-                <p key={i}>
-                  {o.date}, <b>${o.money}</b>
-                  <UpdateY
-                    onClick={() => {
-                      setSelected(i);
-                      setMode("updateY");
-                      setAddData(yujun[i]);
-                      console.log(i, addData)
-                    }}
-                  >
-                    <CgAdd />
-                  </UpdateY>
-                  <DeleteY
-                    onClick={() => {
-                      // setSelected(i);
-                      var arr = [...yujun];
-                      arr.splice(i, 1);
-                      setYujun(arr);
-                    }}
-                  >
-                    <ImCancelCircle />
-                  </DeleteY>
-                </p>
-              );
-            })}
-          </NoteY>
-          <NoteY_Total>
-            total:<b>${YujunTotal}</b>
-          </NoteY_Total>
-        </Main>
-      </Cont>
-
-      <InputCont>
-        <SelectName value={addData.name} name="name" onChange={handleDataChange}>
-          <Option value="fred">Fred</Option>
-          <Option value="yujun">Yujun</Option>
-        </SelectName>
-        <input
-          type="date"
-          placeholder="add $"
-          value={
-            mode === "updateF" ? addData.date : mode === "updateY" ? addData.date : addData.date
-          }
-          name="date"
-          onChange={handleDataChange}
-        />
-        <input
-          type="number"
-          placeholder="add $"
-          value={
-            mode === "updateF"
-            ? addData.money
-            : mode === "updateY"
-            ? addData.money
-            : addData.money
-          }
-          name="money"
-          onChange={handleDataChange}
-          />
-        <button
-          onClick={() => {
-            mode==='create' ? addList() : updateList();
-          }}
-
-          // function 여러줄 쓸때 {}
-          // onClick={()=>{
-          //   addList();
-          //   updateList();
-          // }}
-        >
-          {btnName}
-        </button>
-      </InputCont>
-    </Container>
+    <div className="App">
+      <div className="Main">
+        <div className="Body">
+          {/* fred */}
+          <div className="Section">
+            <div className="NameCont">Fred</div>
+            <ScrollToBottom className="NoteCont">
+              {fred.map((o,i)=>{
+                return(
+                  <div className="TextCont">{o.date}, <b>{o.money}</b></div>
+                )
+              })}
+            </ScrollToBottom>
+          </div>
+          {/* yujun */}
+          <div className="Section">
+            <div className="NameCont">Yujun</div>
+            <ScrollToBottom className="NoteCont">
+              {yujun.map((o,i)=>{
+                return(
+                  <div className="TextCont">{o.date}, <b>{o.money}</b></div>
+                )
+              })}
+            </ScrollToBottom>
+          </div>
+        </div>
+        {/* footer */}
+        <div className="Footer">
+          <div className="Inputs">
+            <label className="Label" for="select">
+              Select Name
+            </label>
+            <Select className="Select" id="select">
+              <option label="Fred" value="fred" />
+              <option label="Yujun" value="yujun" />
+            </Select>
+          </div>
+          <div className="Inputs">
+            <label className="Label" for="date">
+              Select Date
+            </label>
+            <Form type="date" />
+          </div>
+          <div className="Inputs">
+            <label className="Label" for="money">Add allowance</label>
+            <Form type="number" placeholder="$" />
+          </div>
+          <button className="Btn">Add</button>
+        </div>
+      </div>
+    </div>
   );
 }
-
-export default App;
