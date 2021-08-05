@@ -1,41 +1,13 @@
 import React, { useState, useEffect } from "react";
 import App from "./App.scss";
 import Form from "./comps/Input";
-import styled from "styled-components";
 import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
 
 export default function Allownace() {
   const [fred, setFred] = useState([]);
   const [yujun, setYujun] = useState([]);
-
-  const [list, setList] = useState([
-    { name: "fred", date: "2020-12-20", money: "20" },
-    { name: "fred", date: "2020-01-20", money: "23" },
-    { name: "fred", date: "2020-12-20", money: "2" },
-    { name: "fred", date: "2020-10-20", money: "223" },
-    { name: "fred", date: "2020-12-20", money: "20" },
-    // { name: "fred", date: "2020-01-20", money: "23" },
-    // { name: "fred", date: "2020-12-20", money: "2" },
-    // { name: "fred", date: "2020-10-20", money: "223" },
-    // { name: "fred", date: "2020-12-20", money: "20" },
-    // { name: "fred", date: "2020-01-20", money: "23" },
-    // { name: "fred", date: "2020-12-20", money: "2" },
-    // { name: "fred", date: "2020-10-20", money: "223" },
-    { name: "yujun", date: "2020-09-20", money: "20" },
-    { name: "yujun", date: "2021-11-20", money: "40" },
-    { name: "yujun", date: "2020-09-20", money: "20" },
-    { name: "yujun", date: "2021-11-20", money: "40" },
-    { name: "yujun", date: "2020-09-20", money: "20" },
-    { name: "yujun", date: "2021-11-20", money: "40" },
-    { name: "yujun", date: "2020-09-20", money: "20" },
-    { name: "yujun", date: "2021-11-20", money: "40" },
-    // { name: "yujun", date: "2020-09-20", money: "20" },
-    // { name: "yujun", date: "2021-11-20", money: "40" },
-    // { name: "yujun", date: "2020-09-20", money: "20" },
-    { name: "yujun", date: "2021-11-20", money: "40" },
-  ]);
-
+  const [list, setList] = useState([]);
   const [mode, setMode] = useState("create");
   const [selected, setSelected] = useState("");
 
@@ -55,7 +27,6 @@ export default function Allownace() {
     money: "",
   });
 
-  //질문
   const handleData = (event) => {
     const {
       target: { name, value },
@@ -69,7 +40,6 @@ export default function Allownace() {
 
   useEffect(() => {
     getAllowance();
-    // filterData();
   }, []);
 
   const getAllowance = async () => {
@@ -91,13 +61,13 @@ export default function Allownace() {
     try {
       var add = await axios.post("http://localhost:7000/api/addAllowance", data);
 
+      getAllowance();
       setData({
         name: "fred",
         date: "",
         money: "",
       });
 
-      getAllowance();
     } catch (err) {
       console.log(err.messange);
     }
@@ -107,13 +77,13 @@ export default function Allownace() {
     try {
       var update = await axios.post("http://localhost:7000/api/updateAllowance", data);
 
+      getAllowance();
       setData({
         name: "fred",
         date: "",
         money: "",
       });
 
-      getAllowance();
     } 
     catch (err) {
       console.log(err.message);
@@ -131,19 +101,18 @@ export default function Allownace() {
     }
   };
 
-  // console.log(data);
   console.log(selected);
 
   var clickUpdate = (data) => {
     setData(data);
-    setMode("FredUpdate");
+    setMode("update");
   };
 
   return (
     <div className="App">
       <div className="Main">
         <div className="Body">
-          {/* fred */}
+{/* fred */}
           <div className="Section">
             <div className="NameCont">Fred</div>
             <ScrollToBottom className="NoteCont">
@@ -157,7 +126,7 @@ export default function Allownace() {
                   >
                     <div className="DateText">{o.date},</div>
                     <div className="MoneyText">${o.money}</div>
-                    {/* Fred V button */}
+{/* Fred V button */}
                     <div className="Vbtn">
                       <button
                         onClick={() => {
@@ -181,7 +150,7 @@ export default function Allownace() {
               })}
             </ScrollToBottom>
           </div>
-          {/* yujun */}
+{/* yujun */}
           <div className="Section">
             <div className="NameCont">Yujun</div>
             <ScrollToBottom className="NoteCont">
@@ -196,11 +165,10 @@ export default function Allownace() {
                     <div className="DateText">{o.date},</div>
                     <div className="MoneyText">${o.money}</div>
                     <div className="Vbtn">
-                      {/* Yujun V button */}
+{/* Yujun V button */}
                       <button
                         onClick={() => {
-                          setData(o);
-                          setMode("YujunUpdate");
+                          clickUpdate(o);
                         }}
                       >
                         v
@@ -209,9 +177,7 @@ export default function Allownace() {
                     <div className="Xbtn">
                       <button
                         onClick={() => {
-                          var arr = [...yujun];
-                          arr.splice(i, 1);
-                          setYujun(arr);
+                          deleteAllowance(o.id);
                         }}
                       >
                         x
@@ -225,7 +191,7 @@ export default function Allownace() {
         </div>
         <div className="Footer">
           <div className="Inputs">
-            {/* select */}
+{/* select */}
             <label className="Label" for="select">
               Select Name
             </label>
@@ -240,17 +206,17 @@ export default function Allownace() {
               <option label="Yujun" value="yujun" />
             </select>
           </div>
-          {/* date input */}
+{/* date input */}
           <div className="Inputs">
             <label className="Label" for="date">
               Select Date
             </label>
             <Form type="date" name="date" value={data.date} onChange={handleData} />
           </div>
-          {/* money input */}
+{/* money input */}
           <div className="Inputs">
             <label className="Label" for="money">
-              Add allowance
+              Add Allowance
             </label>
             <Form
               type="number"
@@ -260,22 +226,16 @@ export default function Allownace() {
               onChange={handleData}
             />
           </div>
-          {/* button */}
+{/* button */}
           <button
             className="Btn"
             onClick={() => {
               if (mode === "create") {
                 addAllowance();
-              } else if (mode === "FredUpdate") {
+              } else if (mode === 'update'){
                 updateAllowance();
-              } else if (mode === "YujunUpdate") {
-                updateAllowance();
+                setMode('create')
               }
-              setData({
-                name: "fred",
-                date: "",
-                money: "",
-              });
             }}
           >
             Add
