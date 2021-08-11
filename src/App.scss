@@ -75,17 +75,31 @@
 }
 .NoteCont {
   background-color: #e4d9e7;
-  height: 70%;
-  max-height: 500px;
+  height: 60%;
+  max-height: 400px;
   width: 80%;
   text-align: center;
   padding: 10px 0;
+  border-radius: 5px;
   ::-webkit-scrollbar {
     width: 7px;
   }
   ::-webkit-scrollbar-thumb {
     background-color: rgba(0,0,0,.1);
   }
+}
+.TotalCont{
+  // background-color: rgb(223, 192, 223);
+  background-color: #e4d9e7;
+  height: 6%;
+  max-height: 150px;
+  width: 80%;
+  text-align: center;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 5px;
 }
 .Footer {
   flex: 1;

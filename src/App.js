@@ -88,6 +88,11 @@ export default function Allownace() {
       var deletee = await axios.post("http://localhost:7000/api/deleteAllowance", { id: hello });
 
       getAllowance();
+      setData({
+        name: "fred",
+        date: "",
+        money: "",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -106,6 +111,15 @@ export default function Allownace() {
       setMode("create");
     }
   };
+
+  var fredTotal = 0;
+  for (var i = 0; i < fred.length; i++ ) {
+    fredTotal += Number(fred[i].money);
+  }
+  var yujunTotal = 0;
+  for (var i = 0; i < yujun.length; i++ ) {
+    yujunTotal += Number(yujun[i].money);
+  }
 
   return (
     <div className="App">
@@ -143,6 +157,14 @@ export default function Allownace() {
                 );
               })}
             </ScrollToBottom>
+            <div className="TotalCont">
+              <b>
+                <span>Total:</span>
+              </b>{" "}
+              <b>
+                <span>${fredTotal}</span>
+              </b>
+            </div>
           </div>
           {/* yujun */}
           <div className="Section">
@@ -176,6 +198,14 @@ export default function Allownace() {
                 );
               })}
             </ScrollToBottom>
+            <div className="TotalCont">
+              <b>
+                <span>Total:</span>
+              </b>{" "}
+              <b>
+                <span>${yujunTotal}</span>
+              </b>
+            </div>
           </div>
         </div>
         <div className="Footer">
